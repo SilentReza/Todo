@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="This page is gona palanning what do you want to do in youre days">
+    <meta name="keywords" content="todo,plan,start,end,clock">
+    <title>Todo</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="shortcut icon" href="" type="image/x-icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+
+</head>
+
+<body class="container py-4 ">
+    <div id="Todo">
+        <div class="bg-primary w-100 text-white">
+            <h1 class="p-2 text-center">
+                Todo
+            </h1>
+        </div>
+        <article class="mt-5">
+            <section class="row">
+                <aside class="col-md-4">
+                    <div class="card border-0">
+                        <div class="card-header bg-dark p-2 text-white">
+                            <h5>PUT</h5>
+                        </div>
+                        <div class="card-body">
+                            <div>
+                                <div v-if="isError==true" class="alert alert-danger" v-for="(Error, index) in error"
+                                    :key="index">
+                                    <p>{{Error}}</p>
+                                </div>
+                            </div>
+                            <div class="form-floating">
+                                <input type="text" v-model="userPlan" id="user-plan" name="plan" placeholder="plan"
+                                    class="form-control">
+                                <label class=" form-label" for="user-plan">Youre Plan</label>
+                            </div>
+                            <div class="form-floating mt-3">
+                                <input type="time" v-model="userStart" id="user-plan" name="plan" placeholder="plan"
+                                    class="form-control">
+                                <label class="form-label" for="user-plan">Start</label>
+                            </div>
+                            <div class="form-floating mt-3">
+                                <input type="time" v-model="userEnd" id="user-plan" name="plan" placeholder="plan"
+                                    class="form-control">
+                                <label class=" form-label" for="user-plan">End</label>
+                            </div>
+                            <div class="d-grid mt-3">
+                                <button class="btn btn-primary" @click="addPlan">Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+                <div class="col-md-8 mt-md-0 mt-5">
+                    <div class="card border-0">
+                        <div class="card-header bg-dark p-2 text-white">
+                            <h5 class="text-end">Table</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-primary table-hover text-center">
+                                    <thead>
+                                        <tr>
+                                            <th><span id="table-toggle">#</span></th>
+                                            <th>
+                                                <i class="fa-solid fa-rectangle-list" id="table-toggle"></i>
+                                            </th>
+                                            <th>
+                                                <i class="fa-solid fa-hourglass-start" id="table-toggle"></i>
+                                            </th>
+                                            <th>
+                                                <i class="fa-solid fa-hourglass-end" id="table-toggle"></i>
+                                            </th>
+                                            <th>
+                                                <i class="fa-solid fa-play" id="table-toggle"></i>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="(item, index) in allTodo" :key="index">
+                                            <td>{{index + 1}}</td>
+                                            <td :class="item.isComplete==true?'completePlan':''">
+                                                <p v-if="item.isEdite==false">{{item.plan}}</p>
+                                                <input v-else type="text" id="use-editePlan" name="editePlan"
+                                                    class="form-control" v-model="editePlan" :value="userPlan">
+                                            </td>
+                                            <td :class="item.isComplete==true?'completePlan':''">
+                                                <p v-if="item.isEdite==false">{{item.start}}</p>
+                                                <input v-else type="time" id="use-editeStart" name="editeStart"
+                                                    class="form-control" v-model="editeStart" :value="userStart">
+                                            </td>
+                                            <td :class="item.isComplete==true?'completePlan':''">
+                                                <p v-if="item.isEdite==false"> {{item.end}}</p>
+                                                <input v-else type="time" id="use-editeEnd" name="editeEnd"
+                                                    class="form-control" v-model="editeEnd" :value="userEnd">
+                                            </td>
+                                            <td style="width: 200px;">
+                                                <div class="d-flex justify-content-center">
+                                                    <button class="btn btn-danger" @click="deltePlan(index)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                    <button v-if="item.isEdite==false" class="btn btn-warning ms-1"
+                                                        @click="editePlans(index)">
+                                                        <i class="fa-solid fa-square-pen "></i>
+                                                    </button>
+                                                    <button v-else class="btn btn-primary ms-1" @click="completeEdite(index)">
+                                                        <i class="fa fa-check"></i>
+                                                    </button>
+                                                    <button class="btn btn-success ms-1" @click="compelte(index)">
+                                                        <i class="fa-solid fa-square-check"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </article>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script src="https://kit.fontawesome.com/aefae34919.js" crossorigin="anonymous"></script>
+<script src="script.js"></script>
+
+</html>

@@ -1,0 +1,13 @@
+* {
+    font-family: iranyekan;
+    text-decoration: none;
+    font-size: medium;
+}
+
+#table-toggle {
+    font-size: 20px;
+}
+
+.completePlan {
+    text-decoration: line-through red !important;
+}
